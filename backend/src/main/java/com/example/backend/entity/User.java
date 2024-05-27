@@ -15,17 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("mail")
-public class Mail implements Serializable
+@TableName("user")
+public class User implements Serializable
 {
-	@TableId(value="id", type=IdType.AUTO)
+	@TableId(value="id",type=IdType.AUTO)
 	private Integer id;
-	private String theme;
-	private String content;
-	private String attachmentName;
-	private Long size;
-	private String url;
-	private Integer senderId;
-	private Integer receiverId;
-	private LocalDateTime sendTime;
+	private String username;
+	private String emailAddress;
+	private LocalDateTime createTime;
+	private LocalDateTime updateTime;
 }
