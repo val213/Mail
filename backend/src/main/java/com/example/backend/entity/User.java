@@ -22,6 +22,7 @@ public class User implements Serializable
 	private Integer id;
 	private String username;
 	private String emailAddress;
+	private String password;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;
 }
