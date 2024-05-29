@@ -29,7 +29,7 @@ public class UserController
      * //@param request 请求对象，用于操作session
      * //@return 注册结果
      */
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     public Result<User> register(@RequestBody @Valid User user, BindingResult errors, HttpServletRequest request) {
         Result<User> result = new Result<>();
         //首先检查校验
