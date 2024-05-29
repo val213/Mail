@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class MailSendDTO implements Serializable
 {
 	private Integer senderId;
-	private Integer targetEmailAddress;
+	private String targetEmailAddress;
 	private String theme;
 	private String content;
 	private MultipartFile multipartFile;

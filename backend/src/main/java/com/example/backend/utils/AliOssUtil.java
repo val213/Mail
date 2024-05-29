@@ -21,13 +21,17 @@ public class AliOssUtil
 	private String accessKeyId;
 	private String accessKeySecret;
 	private String bucketName;
+	
+	
 	public AliOssUtil()
 	{
 		endpoint="oss-cn-shenzhen.aliyuncs.com";
-		accessKeyId="LTAI5tAxdmNEeANVyvCagSaM";
-		accessKeySecret="lfy9oX6EuT9vZ9nc87bVopKpdjfpe8";
+		accessKeyId="LTAI5tEjvH9aRQF4mESE2Srm";
+		accessKeySecret="H2CyUUurRbr2OuA4hw44f4fUzBmRku";
 		bucketName="yxyc-bucket1";
 	}
+	
+	
 	/**
 	 * 文件上传
 	 *
