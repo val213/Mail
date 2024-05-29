@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.backend.mapper.UserMapper">
+    <!--sql语句之select-->
+    <!-- id 填写在接口中对应的方法名 -->
+    <!-- parameterType 填写传入参数的类型，类型名称与java类型相同 -->
+    <!-- resultType 填写返回参数的名称，类型名称与java类型相同，返回时会自动组装 -->
+    <!-- 对于数据库保留字段，如 name ，不能直接查询，要使用 `` 包裹住才行（不是单引号） -->
+    <!-- 对于传入参数，使用 #{变量名} 方式来取值，其中变量名与java中相同 -->
+    <select id="findUserById" parameterType="java.lang.Integer" resultType="com.example.backend.entity.User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <select id="findUserByName" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <select id="findUserByEmail" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
+        SELECT * FROM users WHERE emailAddress = #{emailAddress}
+    </select>
+    <!--sql语句之insert-->
+    <!-- id 填写在接口中对应的方法名 -->
+    <!-- parameterType 填写传入参数的类型，类型名称与java类型相同 -->
+    <!-- useGeneratedKeys 表示在数据库中插入时是否使用自增主键。需要与 keyProperty 配合使用 -->
+    <!-- 无 resultType ，因为sql中insert方法一定返回此次更新影响的行数，即resultType一定是Integer -->
+    <!-- keyProperty 表示在数据库中的主键是哪个字段，字段名称与java中的相同。需要与 useGeneratedKeys 配合使用 -->
+    <!-- 如果使用了 useGeneratedKeys 和 keyProperty ，则插入成功后jdbc会自动将生成的主键装配进传入的变量中，可以在java中直接获取 -->
+    <!-- 对于传入参数，使用 #{变量名} 方式来取值，其中变量名与java中相同 -->
+    <!-- 如果传入参数类型是一个包含多个字段的类，则依然使用 #{变量名} 方式来取值，此时变量名直接与类中字段名相同，不需要再次声明类名 -->
+    <insert id="registerUser" parameterType="com.example.backend.entity.User">
+        INSERT INTO users (username, emailAddress, password, createTime, updateTime)
+        VALUES (#{username}, #{emailAddress}, #{password}, #{createTime}, #{updateTime})
+    </insert>
+    <!--sql语句之update-->
+    <!-- id 填写在接口中对应的方法名 -->
+    <!-- parameterType 填写传入参数的类型，类型名称与java类型相同 -->
+    <!-- 无 resultType ，因为sql中update方法一定返回此次更新影响的行数，即resultType一定是Integer -->
+    <!-- 本文章未提及delete操作，实际上delete操作的返回值也是行数 -->
+    <update id="editorUser" parameterType="com.example.backend.entity.User">
+        UPDATE users SET
+        username = #{username},
+        emailAddress = #{emailAddress},
+        password = #{password},
+        createTime = #{createTime},
+        updateTime = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
