@@ -6,6 +6,7 @@ import com.zhipu.oapi.service.v4.model.ChatMessage;
 import com.zhipu.oapi.service.v4.model.ChatMessageRole;
 import com.zhipu.oapi.service.v4.model.ChatCompletionRequest;
 import com.zhipu.oapi.service.v4.model.ModelApiResponse;
+import
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
