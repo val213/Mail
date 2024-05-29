@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,7 @@ public class MailController
 	
 	@Operation(summary="发送邮件")
 	@RequestMapping(value="/mail/send", method=RequestMethod.POST)
+	@CrossOrigin
 	public Result<?> sendMail(MailSendDTO mailSendDTO) throws IOException
 	{
 		Mail mail=new Mail();

@@ -150,11 +150,9 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- ZHIPU AI -->
         <dependency>
-            <groupId>cn.bigmodel.openapi</groupId>
-            <artifactId>oapi-java-sdk</artifactId>
-            <version>release-V4-2.0.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
     </dependencies>
