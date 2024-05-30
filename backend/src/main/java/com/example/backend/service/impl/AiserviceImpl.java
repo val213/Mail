@@ -27,7 +27,7 @@ public class AiserviceImpl implements AiService {
     public final Result<String> chatWithMessages(List<String> messages){
         List<Object> chatMessages = new ArrayList<>(messages);
         ModelApiResponse aiResponse = aiClientUtil.chatAiWithMessages(chatMessages);
-        String answer = (String) aiResponse.getData().getChoices().get(2).getMessage().getContent();
+        String answer = (String) aiResponse.getData().getChoices().get(0).getMessage().getContent();
         return Result.success(answer);
     }
 

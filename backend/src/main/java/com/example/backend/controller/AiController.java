@@ -19,7 +19,7 @@ public class AiController {
 
     public AiController(){};
 
-    @PostMapping("ai/summarize")
+    @PostMapping("/mail/summarize")
     public Result<String> summarizeMailContent(@Valid@RequestBody Mail mail){
         String mailContent = mail.getContent();
         System.out.println(mailContent);
