@@ -30,8 +30,9 @@ public class UserController
      * //@return 注册结果
      */
     @PostMapping("/user/register")
-    public Result<User> register(@RequestBody @Valid User user, BindingResult errors, HttpServletRequest request) {
+    public Result<User> register(@RequestBody @Valid User user, BindingResult errors) {
         Result<User> result = new Result<>();
+        System.out.println(user.getUsername());
         //首先检查校验
         if(errors.hasErrors()){
             return result.error("Validation校验失败，http的body不为JSON格式的数据！");
