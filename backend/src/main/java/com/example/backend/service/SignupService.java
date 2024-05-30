@@ -4,5 +4,6 @@ import com.example.backend.entity.User;
 import com.example.backend.result.Result;
 
 public interface SignupService {
-    Result<User> signup(User user);
+    public Result signup(User user);
+    public Result completeSignup(User user);  //完成注册（验证码通过的情况下）
 }
