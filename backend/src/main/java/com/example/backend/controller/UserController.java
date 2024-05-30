@@ -4,6 +4,7 @@ import com.example.backend.entity.User;
 import com.example.backend.result.Result;
 import com.example.backend.service.SignupService;
 import com.example.backend.service.UserService;
+import com.example.backend.service.VerificationService;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 public class UserController
 {
@@ -20,6 +20,9 @@ public class UserController
 
     @Autowired
     private SignupService signupService;
+
+    @Autowired
+    private VerificationService verificationService;
 
     /**
      * 用户注册
@@ -34,14 +37,30 @@ public class UserController
         Result<User> result = new Result<>();
         //首先检查校验
         if(errors.hasErrors()){
-            return result.error("Validation校验失败，http的body不为JSON格式的数据！");
+            return Result.error("Validation校验失败，http的body不为JSON格式的数据！");
         }
         //调用注册服务
         result = signupService.signup(user);
         return result;
     }
 
-    //
+    @PostMapping("/user/verifycode")
+    public Result<User> verify(@RequestBody @Valid User user, @RequestBody @Valid String vcode, BindingResult errors) {
+        Result<User> result = new Result<>();
+        // 检查校验
+        if (errors.hasErrors()) {
+            return Result.error("Validation校验失败，http的body不为JSON格式的数据！");
+        }
+        // 验证验证码
+        boolean isVerified = verificationService.verifyCode(user.getTelephone(), vcode);
+        if (!isVerified) {
+            return Result.error("验证码错误！");
+        }
+        // 用户注册
+        result = signupService.completeSignup(user);
+
+        return result;
+    }
 
 }
 
