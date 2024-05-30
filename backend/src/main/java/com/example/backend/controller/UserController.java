@@ -44,8 +44,6 @@ public class UserController
         return result;
     }
 
-    //
-
     @PostMapping("/user/verifycode")
     public Result<User> verify(@RequestBody @Valid User user, @RequestBody @Valid String vcode, BindingResult errors) {
         Result<User> result = new Result<>();
