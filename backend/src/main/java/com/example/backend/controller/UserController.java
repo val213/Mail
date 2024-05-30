@@ -61,7 +61,7 @@ public class UserController
         // 用户注册
         result = signupService.completeSignup(user);
 
-        return Result.success(user);
+        return result;
     }
 
 }
