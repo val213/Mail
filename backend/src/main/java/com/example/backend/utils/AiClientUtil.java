@@ -17,14 +17,14 @@ import java.util.List;
 @Component
 public class AiClientUtil {
 
-    private static ClientV4 client = null;
+    private final ClientV4 client;
 
     public AiClientUtil(){
         client = new ClientV4.Builder("d487eb7e062ace5cafa265abec9ccee3.eRBjDXHZ95qriwbE").build();
     }
 
     //提供同步调用服务，调用后可以一次性得到结果，如果需要调用请提前设计好对话过程
-    public static ModelApiResponse chatAiWithMessages(List<Object> messages){
+    public ModelApiResponse chatAiWithMessages(List<Object> messages){
         String answer = "";
         //创建ChatMessages列表
         List<ChatMessage> chatMessages = new ArrayList<>();
