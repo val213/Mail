@@ -1,0 +1,10 @@
+mysql:
+  url: jdbc:mysql://rm-cn-27a3ougjg0001sso.rwlb.rds.aliyuncs.com:3306/mail
+  username: bjhasxa
+  password: xsbajHJ261
+
+aliyunoss:
+  endpoint: oss-cn-shenzhen.aliyuncs.com
+  accessKeyId: LTAI5tEjvH9aRQF4mESE2Srm
+  accessKeySecret: H2CyUUurRbr2OuA4hw44f4fUzBmRku
+  bucketName: yxyc-bucket1
