@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Logger;
 
 @RestController
-public class LoginController {
+public class LoginController  {
     @Autowired
     private LoginService loginService;
     Logger logger = Logger.getLogger(LoginController.class.getName());

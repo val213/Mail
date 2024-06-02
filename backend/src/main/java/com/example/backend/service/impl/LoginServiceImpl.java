@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService  {
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
     private AuthenticationManager authenticationManager;
     /**
      * 登出
