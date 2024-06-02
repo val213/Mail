@@ -3,6 +3,8 @@ package com.example.backend.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,25 +20,21 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)  // 禁用 CSRF 防护
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.DELETE)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET)
-                        .permitAll());  // 允许所有请求，不需要身份验证
-        // 启用 HTTP 基础认证
+                        .requestMatchers(HttpMethod.DELETE).permitAll()
+                        .requestMatchers(HttpMethod.PUT).permitAll()
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll());  // 允许所有请求，不需要身份验证
 
         return http.build();
     }
 
-
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Bean
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
-    public String encodePassword(String password) {
-        return passwordEncoder().encode(password);
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
