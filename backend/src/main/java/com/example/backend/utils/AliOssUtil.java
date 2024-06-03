@@ -4,6 +4,7 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
+import com.aliyun.oss.model.ObjectMetadata;
 import com.example.backend.properties.AliossProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Data
 @AllArgsConstructor
@@ -42,14 +45,17 @@ public class AliOssUtil
 	 * @param objectName
 	 * @return
 	 */
-	public String upload(byte[] bytes,String objectName)
+	public String upload(byte[] bytes,String objectName,String originalFilename)
 	{
 		// 创建OSSClient实例。
 		OSS ossClient=new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
 		try
 		{
 			// 创建PutObject请求。
-			ossClient.putObject(bucketName,objectName,new ByteArrayInputStream(bytes));
+			ObjectMetadata objectMetadata=new ObjectMetadata();
+			String encode=URLEncoder.encode(originalFilename,StandardCharsets.UTF_8);
+			objectMetadata.setContentDisposition("attachment; filename=\""+encode+"\"");
+			ossClient.putObject(bucketName,objectName,new ByteArrayInputStream(bytes),objectMetadata);
 		}catch(OSSException oe)
 		{
 			System.out.println("Caught an OSSException, which means your request made it to OSS, " + "but was " +
