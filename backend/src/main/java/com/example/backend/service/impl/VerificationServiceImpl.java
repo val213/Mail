@@ -62,8 +62,8 @@ public class VerificationServiceImpl implements VerificationService {
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
         // 初始化ascClient需要的几个参数
-        final String product = "Dysmsapi"; // 短信API产品名称（短信产品名固定，无需修改）
-        final String domain = "dysmsapi.aliyuncs.com"; // 短信API产品域名（接口地址固定，无需修改）
+        final String product = alismsProperties.getProduct(); // 短信API产品名称（短信产品名固定，无需修改）
+        final String domain = alismsProperties.getDomain(); // 短信API产品域名（接口地址固定，无需修改）
         // 替换成你的AK
         final String accessKeyId = alismsProperties.getAccessKeyId();// 你的accessKeyId
         final String accessKeySecret = alismsProperties.getAccessKeySecret(); // 你的accessKeySecret

@@ -15,5 +15,7 @@ public class AlismsProperties {
     private String accessKeySecret;
     private String signName;
     private String templateCode;
+    private String product;
+    private String domain;
 }
 

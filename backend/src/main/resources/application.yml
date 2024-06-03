@@ -30,5 +30,7 @@ aliyunsms:
   access-key-secret: ${aliyunsms.accessKeySecret}
   sign-name: ${aliyunsms.signName}
   template-code: ${aliyunsms.templateCode}
+  product: ${aliyunsms.product}
+  domain: ${aliyunsms.domain}
 #test
 spring.main.allow-bean-definition-overriding: true
