@@ -4,13 +4,14 @@ import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.result.Result;
 import com.example.backend.service.SignupService;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.example.backend.service.VerificationService;
 @Service
 public class SignupServiceimpl implements SignupService {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Autowired
