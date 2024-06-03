@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.backend.dto.MailSendDTO;
 import com.example.backend.entity.Mail;
 import com.example.backend.entity.User;
+import com.example.backend.result.PageResult;
 import com.example.backend.result.Result;
 import com.example.backend.service.MailService;
 import com.example.backend.service.UserService;
@@ -61,5 +62,14 @@ public class MailController
 		mail.setReceiverId(targetUser.getId());
 		mailService.save(mail);
 		return Result.success();
+	}
+	
+	
+	@Operation(summary="分页查询邮件")
+	@RequestMapping(value="/mail/view", method=RequestMethod.GET)
+	@CrossOrigin
+	public Result<PageResult> view()
+	{
+	
 	}
 }

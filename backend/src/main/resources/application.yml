@@ -24,3 +24,5 @@ aliyunoss:
   accessKeyId: ${aliyunoss.accessKeyId}
   accessKeySecret: ${aliyunoss.accessKeySecret}
   bucketName: ${aliyunoss.bucketName}
+#test
+spring.main.allow-bean-definition-overriding: true
