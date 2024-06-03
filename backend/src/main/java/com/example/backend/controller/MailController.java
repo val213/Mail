@@ -55,7 +55,7 @@ public class MailController
 		assert originalFilename!=null;
 		String extendedname=originalFilename.substring(originalFilename.lastIndexOf("."));
 		String url=aliOssUtil.upload(mailSendDTO.getMultipartFile()
-		                                        .getBytes(),UUID.randomUUID() + extendedname);
+		                                        .getBytes(),UUID.randomUUID() + extendedname,originalFilename);
 		mail.setSendTime(LocalDateTime.now());
 		mail.setSize(mailSendDTO.getMultipartFile()
 		                        .getSize());
