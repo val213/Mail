@@ -25,7 +25,6 @@
         SELECT * FROM user WHERE telephone = #{telephone}
     </select>
 
-
     <!--sql语句之insert-->
     <!-- id 填写在接口中对应的方法名 -->
     <!-- parameterType 填写传入参数的类型，类型名称与java类型相同 -->

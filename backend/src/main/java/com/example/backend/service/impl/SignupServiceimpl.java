@@ -51,6 +51,7 @@ public class SignupServiceimpl implements SignupService {
         //符合注册新用户的条件，通过mapper对数据库进行操作
 
         //1.分配id
+        //TODO通过一定的算法给每个用户分配唯一的id
 
 //         2.加密用户密码
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
