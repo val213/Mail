@@ -24,5 +24,11 @@ aliyunoss:
   accessKeyId: ${aliyunoss.accessKeyId}
   accessKeySecret: ${aliyunoss.accessKeySecret}
   bucketName: ${aliyunoss.bucketName}
+
+aliyunsms:
+  access-key-id: ${aliyunsms.accessKeyId}
+  access-key-secret: ${aliyunsms.accessKeySecret}
+  sign-name: ${aliyunsms.signName}
+  template-code: ${aliyunsms.templateCode}
 #test
 spring.main.allow-bean-definition-overriding: true

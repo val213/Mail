@@ -8,7 +8,9 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.example.backend.pojo.ResponseResult;
+import com.example.backend.properties.AlismsProperties;
 import com.example.backend.service.VerificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class VerificationServiceImpl implements VerificationService {
     // 使用ConcurrentHashMap来存储验证码和手机号的映射关系  也可以用session存储
     private static ConcurrentHashMap<String, String> verificationCodeMap = new ConcurrentHashMap<>();
-
+    @Autowired
+    private AlismsProperties alismsProperties;
     // 生成随机验证码
     private static String generateVerificationCode() {
         return UUID.randomUUID().toString().substring(0, 6);
@@ -62,8 +65,8 @@ public class VerificationServiceImpl implements VerificationService {
         final String product = "Dysmsapi"; // 短信API产品名称（短信产品名固定，无需修改）
         final String domain = "dysmsapi.aliyuncs.com"; // 短信API产品域名（接口地址固定，无需修改）
         // 替换成你的AK
-        final String accessKeyId = "LTAI5tKQt12iGpfv8BEBFC2y"; // 你的accessKeyId
-        final String accessKeySecret = "frOKnxa4DoQa7xfDHHyI9Zi0VLyvsn"; // 你的accessKeySecret
+        final String accessKeyId = alismsProperties.getAccessKeyId();// 你的accessKeyId
+        final String accessKeySecret = alismsProperties.getAccessKeySecret(); // 你的accessKeySecret
         // 初始化ascClient
         IClientProfile profile = DefaultProfile.getProfile("CN-Hangzhou", accessKeyId, accessKeySecret);
         IAcsClient acsClient = new DefaultAcsClient(profile);
@@ -74,9 +77,9 @@ public class VerificationServiceImpl implements VerificationService {
         // 必填:待发送手机号
         request.setPhoneNumbers(phone);
         // 必填:短信签名-可在短信控制台中找到
-        request.setSignName("easyball");
+        request.setSignName(alismsProperties.getSignName());
         // 必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode("SMS_467100337");
+        request.setTemplateCode(alismsProperties.getTemplateCode());
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         request.setTemplateParam("{\"name\":\"Tom\", \"code\":\"" + code + "\"}");
         // hint 此处可能会抛出异常，注意catch
