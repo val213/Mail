@@ -65,11 +65,11 @@ public class MailController
 	}
 	
 	
-	@Operation(summary="分页查询邮件")
-	@RequestMapping(value="/mail/view", method=RequestMethod.GET)
-	@CrossOrigin
-	public Result<PageResult> view()
-	{
-	
-	}
+//	@Operation(summary="分页查询邮件")
+//	@RequestMapping(value="/mail/view", method=RequestMethod.GET)
+//	@CrossOrigin
+//	public Result<PageResult> view()
+//	{
+//
+//	}
 }

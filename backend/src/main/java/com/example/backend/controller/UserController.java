@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.example.backend.entity.User;
+import com.example.backend.pojo.ResponseResult;
 import com.example.backend.result.Result;
 import com.example.backend.service.SignupService;
 import com.example.backend.service.UserService;
@@ -8,11 +10,9 @@ import com.example.backend.service.VerificationService;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Objects;
@@ -40,8 +40,8 @@ public class UserController
      * //@return 注册结果
      */
     @PostMapping("/user/register")
-    public Result<User> register(@Valid @RequestBody User user, BindingResult errors, HttpServletRequest request) {
-        Result<User> result = new Result<>();
+    public Result<User> register(@Valid @RequestBody User user, @RequestParam String verifycode, BindingResult errors, HttpServletRequest request) {
+        Result result = new Result<>();
 
         // 打印请求参数
         logger.info("用户名: " + user.getUsername());
@@ -54,27 +54,15 @@ public class UserController
         }
 
         // 调用注册服务
-        result = signupService.signup(user);
+        result = signupService.signup(user,verifycode);
         return result;
     }
 
-    @PostMapping("/user/verifycode")
-    public Result<User> verify(@RequestBody @Valid User user, @RequestBody @Valid String vcode, BindingResult errors) {
-        Result<User> result = new Result<>();
-        // 检查校验
-        if (errors.hasErrors()) {
-            return Result.error("Validation校验失败，http的body不为JSON格式的数据！");
-        }
-        // 验证验证码
-        boolean isVerified = verificationService.verifyCode(user.getTelephone(), vcode);
-        if (!isVerified) {
-            return Result.error("验证码错误！");
-        }
-        // 用户注册
-        result = signupService.completeSignup(user);
-
-        return result;
+    @PostMapping("/user/sendverifycode")
+    public ResponseResult sendVerifyCode(@RequestParam String telephone) throws ClientException {
+        System.out.println("telephone in controller: " + telephone);
+        // 调用发送验证码服务
+        return  verificationService.sendVerificationCode(telephone);
     }
-
 }
 
