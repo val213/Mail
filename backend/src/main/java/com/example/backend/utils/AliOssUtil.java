@@ -4,9 +4,11 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
+import com.example.backend.properties.AliossProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
@@ -23,12 +25,13 @@ public class AliOssUtil
 	private String bucketName;
 	
 	
-	public AliOssUtil()
+	@Autowired
+	public AliOssUtil(AliossProperties aliossProperties)
 	{
-		endpoint="oss-cn-shenzhen.aliyuncs.com";
-		accessKeyId="LTAI5tEjvH9aRQF4mESE2Srm";
-		accessKeySecret="H2CyUUurRbr2OuA4hw44f4fUzBmRku";
-		bucketName="yxyc-bucket1";
+		endpoint=aliossProperties.getEndpoint();
+		accessKeyId=aliossProperties.getAccessKeyId();
+		accessKeySecret=aliossProperties.getAccessKeySecret();
+		bucketName=aliossProperties.getBucketName();
 	}
 	
 	

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${mysql.url}
+    username: ${mysql.username}
+    password: ${mysql.password}
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+aliyunoss:
+  endpoint: ${aliyunoss.endpoint}
+  accessKeyId: ${aliyunoss.accessKeyId}
+  accessKeySecret: ${aliyunoss.accessKeySecret}
+  bucketName: ${aliyunoss.bucketName}
+#test
+spring.main.allow-bean-definition-overriding: true
