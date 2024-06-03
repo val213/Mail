@@ -30,9 +30,9 @@ public class SignupServiceimpl implements SignupService {
         }
 
         // 发送验证码
-        String verificationCode = verificationService.sendVerificationCode(user.getTelephone());
+//        String verificationCode = verificationService.sendVerificationCode(user.getTelephone());
 
-        return Result.success("验证码已发送！");
+        return Result.success("注册成功！");
     }
 
     @Override

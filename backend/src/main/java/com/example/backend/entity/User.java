@@ -30,10 +30,9 @@ public class User implements Serializable
 {
 	@TableId(value="id",type=IdType.AUTO)
 	private Integer id;
-	@NotEmpty(message = "用户名不能为空！")
 	private String username;
-	@NotEmpty(message = "邮箱不能为空！")
 	private String emailAddress;
+	// @NotEmpty的作用是在验证的时候，不允许为空
 	@NotEmpty(message = "密码不能为空！")
 	private String password;
 	private String telephone;
