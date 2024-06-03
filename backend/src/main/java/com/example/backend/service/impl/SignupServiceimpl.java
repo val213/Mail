@@ -20,7 +20,7 @@ public class SignupServiceimpl implements SignupService {
     private VerificationService verificationService;
 
     @Override
-    public Result<String> signup(User user){
+    public Result<String> signup(User user,String verificationCode) {
         Result<String> result = new Result<>();
 
         //先查找注册用户是否存在
@@ -29,8 +29,6 @@ public class SignupServiceimpl implements SignupService {
             return Result.error("用户已存在！");
         }
 
-        // 发送验证码
-//        String verificationCode = verificationService.sendVerificationCode(user.getTelephone());
 
         return Result.success("注册成功！");
     }

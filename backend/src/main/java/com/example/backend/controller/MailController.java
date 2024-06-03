@@ -69,6 +69,15 @@ public class MailController
 	}
 	
 	
+<<<<<<< HEAD
+//	@Operation(summary="分页查询邮件")
+//	@RequestMapping(value="/mail/view", method=RequestMethod.GET)
+//	@CrossOrigin
+//	public Result<PageResult> view()
+//	{
+//
+//	}
+=======
 	@Operation(summary="分页查询邮件")
 	@RequestMapping(value="/mail/view", method=RequestMethod.POST)
 	@CrossOrigin
@@ -97,4 +106,5 @@ public class MailController
 		}
 		return Result.success(new PageResult(mailPage.getTotal(),mailViewVOList));
 	}
+>>>>>>> 66e5ebf581b15cdaef92415cb44be26cee8d2e9d
 }
