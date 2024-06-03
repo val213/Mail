@@ -2,6 +2,7 @@ package com.example.backend.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -39,8 +40,10 @@ public class User implements Serializable
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;
 	// 用户登录
+	@TableField(exist=false)
 	private List<String> permissions =  new ArrayList<>();;
 
+	@TableField(exist=false)
 	@JSONField(serialize = false)
 	private List<SimpleGrantedAuthority> authorities;
 
