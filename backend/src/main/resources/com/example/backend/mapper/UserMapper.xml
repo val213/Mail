@@ -20,6 +20,10 @@
     <select id="findUserByEmail" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
         SELECT * FROM user WHERE email_Address = #{emailAddress}
     </select>
+
+    <select id="findUserByTelephone" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
+        SELECT * FROM user WHERE telephone = #{telephone}
+    </select>
     <!--sql语句之insert-->
     <!-- id 填写在接口中对应的方法名 -->
     <!-- parameterType 填写传入参数的类型，类型名称与java类型相同 -->
@@ -30,8 +34,8 @@
     <!-- 对于传入参数，使用 #{变量名} 方式来取值，其中变量名与java中相同 -->
     <!-- 如果传入参数类型是一个包含多个字段的类，则依然使用 #{变量名} 方式来取值，此时变量名直接与类中字段名相同，不需要再次声明类名 -->
     <insert id="registerUser" parameterType="com.example.backend.entity.User">
-        INSERT INTO user (id,username, email_Address, password, phone_number, createTime, updateTime)
-        VALUES (#{id},#{username}, #{emailAddress}, #{password}, #{telePhone}, #{createTime}, #{updateTime})
+        INSERT INTO user (id,username, email_Address, password, telephone, create_Time, update_Time)
+        VALUES (#{id},#{username}, #{emailAddress}, #{password}, #{telephone}, #{createTime}, #{updateTime})
     </insert>
     <!--sql语句之update-->
     <!-- id 填写在接口中对应的方法名 -->
@@ -40,12 +44,12 @@
     <!-- 本文章未提及delete操作，实际上delete操作的返回值也是行数 -->
     <update id="editorUser" parameterType="com.example.backend.entity.User">
         UPDATE user SET
-        username = #{username},
-        email_Address = #{emailAddress},
-        password = #{password},
-        phone_number = #{telePhone},
-        createTime = #{createTime},
-        updateTime = #{updateTime}
+                        username = #{username},
+                        email_Address = #{emailAddress},
+                        password = #{password},
+                        phone_number = #{telePhone},
+                        create_Time = #{createTime},
+                        update_Time = #{updateTime}
         WHERE id = #{id}
     </update>
 
