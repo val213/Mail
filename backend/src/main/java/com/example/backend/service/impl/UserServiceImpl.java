@@ -13,14 +13,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 {
     @Autowired
     private UserMapper userMapper;
+    @Override
     public Result<User> update(User user){
         Result<User> result = new Result<>();
         User getuser = userMapper.findUserByName(user.getUsername());
         if(getuser == null) {
-            return result.error("不存在该用户！");
+            return Result.error("不存在该用户！");
         }
         //修改用户
         userMapper.editorUser(user);
-        return result.success();
+        return Result.success();
     }
 }
