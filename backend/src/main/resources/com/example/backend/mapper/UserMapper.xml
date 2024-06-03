@@ -18,7 +18,7 @@
     </select>
 
     <select id="findUserByEmail" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
-        SELECT * FROM user WHERE emailAddress = #{emailAddress}
+        SELECT * FROM user WHERE email_Address = #{emailAddress}
     </select>
     <!--sql语句之insert-->
     <!-- id 填写在接口中对应的方法名 -->
@@ -30,7 +30,7 @@
     <!-- 对于传入参数，使用 #{变量名} 方式来取值，其中变量名与java中相同 -->
     <!-- 如果传入参数类型是一个包含多个字段的类，则依然使用 #{变量名} 方式来取值，此时变量名直接与类中字段名相同，不需要再次声明类名 -->
     <insert id="registerUser" parameterType="com.example.backend.entity.User">
-        INSERT INTO user (id,username, emailAddress, password, telePhone, createTime, updateTime)
+        INSERT INTO user (id,username, email_Address, password, phone_number, createTime, updateTime)
         VALUES (#{id},#{username}, #{emailAddress}, #{password}, #{telePhone}, #{createTime}, #{updateTime})
     </insert>
     <!--sql语句之update-->
@@ -41,9 +41,9 @@
     <update id="editorUser" parameterType="com.example.backend.entity.User">
         UPDATE user SET
         username = #{username},
-        emailAddress = #{emailAddress},
+        email_Address = #{emailAddress},
         password = #{password},
-        telePhone = #{telePhone},
+        phone_number = #{telePhone},
         createTime = #{createTime},
         updateTime = #{updateTime}
         WHERE id = #{id}
