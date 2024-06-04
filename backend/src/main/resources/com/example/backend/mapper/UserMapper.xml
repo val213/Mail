@@ -48,7 +48,7 @@
                         username = #{username},
                         email_Address = #{emailAddress},
                         password = #{password},
-                        phone_number = #{telePhone},
+                        telephone = #{telephone},
                         create_Time = #{createTime},
                         update_Time = #{updateTime}
         WHERE id = #{id}
