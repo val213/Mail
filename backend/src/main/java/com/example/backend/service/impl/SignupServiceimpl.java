@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.algorithm.SnowflakeIdGenerator;
 import com.example.backend.entity.User;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.result.Result;
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 
 @Service
 public class SignupServiceimpl implements SignupService {
+    private final SnowflakeIdGenerator idGenerator = new SnowflakeIdGenerator(1, 1);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -42,16 +45,17 @@ public class SignupServiceimpl implements SignupService {
         }
 
 
-        // 用户不存在，就开始创建新用户，首先需要比对验证码信息的正确性
+/*        // 用户不存在，就开始创建新用户，首先需要比对验证码信息的正确性
         if (!verificationService.verifyCode(user.getTelephone(), code)) {
             return Result.error("验证码错误！");
 
-        }
+        }*/
 
         //符合注册新用户的条件，通过mapper对数据库进行操作
 
         //1.分配id
-        //TODO通过一定的算法给每个用户分配唯一的id
+        user.setId((int) idGenerator.nextId());
+
 
 //         2.加密用户密码
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
