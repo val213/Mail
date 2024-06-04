@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${mysql.url}
+    username: ${mysql.username}
+    password: ${mysql.password}
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+aliyunoss:
+  endpoint: ${aliyunoss.endpoint}
+  accessKeyId: ${aliyunoss.accessKeyId}
+  accessKeySecret: ${aliyunoss.accessKeySecret}
+  bucketName: ${aliyunoss.bucketName}
+
+aliyunsms:
+  access-key-id: ${aliyunsms.accessKeyId}
+  access-key-secret: ${aliyunsms.accessKeySecret}
+  sign-name: ${aliyunsms.signName}
+  template-code: ${aliyunsms.templateCode}
+  product: ${aliyunsms.product}
+  domain: ${aliyunsms.domain}
+#test
+spring.main.allow-bean-definition-overriding: true

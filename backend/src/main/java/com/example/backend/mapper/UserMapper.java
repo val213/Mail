@@ -13,6 +13,8 @@ public interface UserMapper extends BaseMapper<User>
     User findUserByName(String username);
     //根据邮箱返回用户信息
     User findUserByEmail(String emailAddress);
+    //根据手机号返回用户信息
+    User findUserByTelephone(String telephone);
     //注册用户
     int registerUser(User user);
     //修改用户信息
