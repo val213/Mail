@@ -64,19 +64,14 @@ public class MailController
 		User targetUser=userService.getOne(new QueryWrapper<>(User.class).eq("email_address",
 				mailSendDTO.getTargetEmailAddress()));
 		mail.setReceiverId(targetUser.getId());
+		mail.setOwnerId(mail.getSenderId());
+		mailService.save(mail);
+		mail.setOwnerId(mail.getReceiverId());
 		mailService.save(mail);
 		return Result.success();
 	}
 	
-
-//	@Operation(summary="分页查询邮件")
-//	@RequestMapping(value="/mail/view", method=RequestMethod.GET)
-//	@CrossOrigin
-//	public Result<PageResult> view()
-//	{
-//
-//	}
-
+	
 	@Operation(summary="分页查询邮件")
 	@RequestMapping(value="/mail/view", method=RequestMethod.POST)
 	@CrossOrigin
@@ -85,7 +80,8 @@ public class MailController
 		QueryWrapper<Mail> mailQueryWrapper=new QueryWrapper<Mail>().eq(mailViewDTO.getType()==1,"sender_id",
 				                                                            mailViewDTO.getUserId())
 		                                                            .eq(mailViewDTO.getType()==2,"receiver_id",
-				                                                            mailViewDTO.getUserId());
+				                                                            mailViewDTO.getUserId())
+		                                                            .eq("owner_id",mailViewDTO.getUserId());
 		Page<Mail> mailPage=mailService.page(new Page<>(mailViewDTO.getPageNumber(),mailViewDTO.getPageSize()),
 				mailQueryWrapper);
 		List<Mail> mailList=mailPage.getRecords();
@@ -105,5 +101,57 @@ public class MailController
 		}
 		return Result.success(new PageResult(mailPage.getTotal(),mailViewVOList));
 	}
-//>>>>>>> 66e5ebf581b15cdaef92415cb44be26cee8d2e9d
+	
+	
+	//>>>>>>> 66e5ebf581b15cdaef92415cb44be26cee8d2e9d
+	@Operation(summary="批量删除邮件")
+	@RequestMapping(value="/mail/delete", method=RequestMethod.DELETE)
+	@CrossOrigin
+	public Result<?> deleteBatch(@RequestParam List<Integer> ids)
+	{
+		mailService.removeBatchByIds(ids);
+		return Result.success();
+	}
+	
+	
+	@Operation(summary="批量星标邮件")
+	@RequestMapping(value="/mail/star/{userId}", method=RequestMethod.PUT)
+	@CrossOrigin
+	public Result<?> starBatch(@PathVariable Integer userId,@RequestParam List<Integer> ids)
+	{
+		User user=userService.getById(userId);
+		if(user.getStarMailIds()==null)
+		{
+			user.setStarMailIds(ids);
+			userService.update(user);
+		}
+		else
+		{
+			List<Integer> starMailIds=user.getStarMailIds();
+			starMailIds.addAll(ids);
+			starMailIds=starMailIds.stream()
+			                       .distinct()
+			                       .toList();
+			user.setStarMailIds(starMailIds);
+			userService.update(user);
+		}
+		return Result.success();
+	}
+	
+	
+	@Operation(summary="批量取消星标邮件")
+	@RequestMapping(value="/mail/cancelstar/{userId}", method=RequestMethod.PUT)
+	@CrossOrigin
+	public Result<?> cancelstarBatch(@PathVariable Integer userId,@RequestParam List<Integer> ids)
+	{
+		User user=userService.getById(userId);
+		if(user.getStarMailIds()!=null)
+		{
+			List<Integer> starMailIds=user.getStarMailIds();
+			starMailIds.removeAll(ids);
+			user.setStarMailIds(starMailIds);
+			userService.update(user);
+		}
+		return Result.success();
+	}
 }
