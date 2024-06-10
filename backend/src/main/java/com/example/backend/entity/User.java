@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -39,6 +40,8 @@ public class User implements Serializable
 	private String telephone;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;
+	@TableField(typeHandler=JacksonTypeHandler.class)
+	private List<Integer> starMailIds;
 	// 用户登录
 	@TableField(exist=false)
 	private List<String> permissions =  new ArrayList<>();;
