@@ -9,6 +9,7 @@ import com.example.backend.service.impl.MailAiServiceimpl;
 import com.example.backend.utils.AiClientUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class AiController extends SecurityConfig {
     MailAiService mailAiService = new MailAiServiceimpl();
 
     public AiController(){};
-
+    @CrossOrigin
     @PostMapping("/ai/summarize")
     public Result<String> summarizeMailContent(@Valid@RequestBody String mailContent){
         System.out.println(mailContent);
