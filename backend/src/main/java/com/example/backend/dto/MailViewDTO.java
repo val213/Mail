@@ -14,8 +14,10 @@ import java.io.Serializable;
 public class MailViewDTO implements Serializable
 {
 	private Integer userId;
-	private Integer type;//1我发送的 2我收到的 3星标 4已读 5未读
-	private String theme;
+	private Integer type;//1我发送的 2我收到的
+	private Integer star;//0非星标1星标
+	private Integer read;//0未读1已读
+	private String theme;//按邮件主题模糊查询
 	private Integer pageNumber;
 	private Integer pageSize;
 }

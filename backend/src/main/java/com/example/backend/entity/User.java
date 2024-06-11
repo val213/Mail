@@ -30,46 +30,47 @@ import java.util.stream.Collectors;
 @TableName("user")
 public class User implements Serializable
 {
-	@TableId(value="id",type=IdType.AUTO)
+	@TableId(value="id", type=IdType.AUTO)
 	private Integer id;
 	private String username;
 	private String emailAddress;
 	// @NotEmpty的作用是在验证的时候，不允许为空
-	@NotEmpty(message = "密码不能为空！")
+	@NotEmpty(message="密码不能为空！")
 	private String password;
 	private String telephone;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;
-	@TableField(typeHandler=JacksonTypeHandler.class)
-	private List<Integer> starMailIds;
 	// 用户登录
 	@TableField(exist=false)
-	private List<String> permissions =  new ArrayList<>();;
-
+	private List<String> permissions=new ArrayList<>();
+	;
 	@TableField(exist=false)
-	@JSONField(serialize = false)
+	@JSONField(serialize=false)
 	private List<SimpleGrantedAuthority> authorities;
-
-	public User(Integer id, String username, String emailAddress, String password, LocalDateTime createTime, LocalDateTime updateTime)
+	
+	
+	public User(Integer id,String username,String emailAddress,String password,LocalDateTime createTime,
+			LocalDateTime updateTime)
 	{
-		this.id = id;
-		this.username = username;
-		this.emailAddress = emailAddress;
-		this.password = password;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
+		this.id=id;
+		this.username=username;
+		this.emailAddress=emailAddress;
+		this.password=password;
+		this.createTime=createTime;
+		this.updateTime=updateTime;
 	}
-
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (authorities != null)
+	
+	
+	public Collection<? extends GrantedAuthority> getAuthorities()
+	{
+		if(authorities!=null)
 		{
 			return authorities;
 		}
-
 		// 把permissions中String类型的权限信息封装成
-		authorities = permissions.stream()
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+		authorities=permissions.stream()
+		                       .map(SimpleGrantedAuthority::new)
+		                       .collect(Collectors.toList());
 		return authorities;
 	}
 }

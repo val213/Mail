@@ -29,4 +29,6 @@ public class Mail implements Serializable
 	private Integer receiverId;
 	private LocalDateTime sendTime;
 	private Integer ownerId;
+	private Integer star;
+	private Integer read;
 }
