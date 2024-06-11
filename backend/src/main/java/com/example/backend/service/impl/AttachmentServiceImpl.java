@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.backend.entity.Attachment;
 import com.example.backend.mapper.AttachmentMapper;
 import com.example.backend.service.AttachmentService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AttachmentServiceImpl extends ServiceImpl<AttachmentMapper, Attachment> implements AttachmentService {
 }

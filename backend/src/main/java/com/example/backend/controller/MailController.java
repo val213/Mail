@@ -2,14 +2,17 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.backend.dto.MailDetailsDTO;
 import com.example.backend.dto.MailSendDTO;
 import com.example.backend.dto.MailViewDTO;
+import com.example.backend.entity.Attachment;
 import com.example.backend.entity.Mail;
 import com.example.backend.entity.User;
 import com.example.backend.result.PageResult;
 import com.example.backend.result.Result;
 import com.example.backend.service.MailService;
 import com.example.backend.service.UserService;
+import com.example.backend.service.AttachmentService;
 import com.example.backend.utils.AliOssUtil;
 import com.example.backend.vo.MailViewVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,29 +25,30 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Tag(name="邮件模块")
 @RestController
-public class MailController
-{
+public class MailController {
 	private final MailService mailService;
 	private final AliOssUtil aliOssUtil;
 	private final UserService userService;
-	
-	
-	public MailController(MailService mailService,AliOssUtil aliOssUtil,UserService userService)
-	{
-		this.mailService=mailService;
-		this.aliOssUtil=aliOssUtil;
-		this.userService=userService;
+
+	private final AttachmentService attachmentService;
+	public MailController(MailService mailService, AliOssUtil aliOssUtil, UserService userService, AttachmentService attachmentService) {
+		this.mailService = mailService;
+		this.aliOssUtil = aliOssUtil;
+		this.userService = userService;
+		this.attachmentService = attachmentService;
 	}
-	
-	
-	@Operation(summary="发送邮件")
-	@RequestMapping(value="/mail/send", method=RequestMethod.POST)
+
+
+	@Operation(summary = "发送邮件")
+	@RequestMapping(value = "/mail/send", method = RequestMethod.POST)
 	@CrossOrigin
 	public Result<?> sendMail(MailSendDTO mailSendDTO) throws IOException
 	{
@@ -74,10 +78,10 @@ public class MailController
 		mailService.save(mail);
 		return Result.success();
 	}
-	
-	
-	@Operation(summary="分页查询邮件")
-	@RequestMapping(value="/mail/view", method=RequestMethod.POST)
+
+
+	@Operation(summary = "分页查询邮件")
+	@RequestMapping(value = "/mail/view", method = RequestMethod.POST)
 	@CrossOrigin
 	public Result<PageResult> view(@RequestBody MailViewDTO mailViewDTO)
 	{
@@ -93,11 +97,11 @@ public class MailController
 				                                                            mailViewDTO.getTheme())
 		                                                            .eq("owner_id",mailViewDTO.getUserId());
 		Page<Mail> mailPage=mailService.page(new Page<>(mailViewDTO.getPageNumber(),mailViewDTO.getPageSize()),
+
 				mailQueryWrapper);
-		List<Mail> mailList=mailPage.getRecords();
-		List<MailViewVO> mailViewVOList=new ArrayList<>();
-		for(Mail mail: mailList)
-		{
+		List<Mail> mailList = mailPage.getRecords();
+		List<MailViewVO> mailViewVOList = new ArrayList<>();
+		for (Mail mail : mailList) {
 			mailViewVOList.add(MailViewVO.builder()
 			                             .id(mail.getId())
 			                             .theme(mail.getTheme())
@@ -111,16 +115,14 @@ public class MailController
 			                             .read(mail.getReadis())
 			                             .build());
 		}
-		return Result.success(new PageResult(mailPage.getTotal(),mailViewVOList));
+		return Result.success(new PageResult(mailPage.getTotal(), mailViewVOList));
 	}
-	
-	
-	//>>>>>>> 66e5ebf581b15cdaef92415cb44be26cee8d2e9d
-	@Operation(summary="批量删除邮件")
-	@RequestMapping(value="/mail/delete", method=RequestMethod.DELETE)
+
+
+	@Operation(summary = "批量删除邮件")
+	@RequestMapping(value = "/mail/delete", method = RequestMethod.DELETE)
 	@CrossOrigin
-	public Result<?> deleteBatch(@RequestParam List<Integer> ids)
-	{
+	public Result<?> deleteBatch(@RequestParam List<Integer> ids) {
 		mailService.removeBatchByIds(ids);
 		return Result.success();
 	}
@@ -155,5 +157,26 @@ public class MailController
 			mailService.updateById(mail);
 		}
 		return Result.success();
+	}
+
+	@Operation(summary = "邮件详情")
+	@RequestMapping(value = "/mail/maildetails/{mailId}", method = RequestMethod.GET)
+	@CrossOrigin
+	public Result<MailDetailsDTO> mailDetails(@PathVariable Integer mailId) {
+		Mail mail = mailService.getById(mailId);
+		if (mail == null) {
+			return Result.error("邮件不存在");
+		}
+		MailDetailsDTO mailDetails = new MailDetailsDTO();
+		BeanUtils.copyProperties(mail, mailDetails);
+		// 获取附件信息
+		if (mail.getAttachmentIds() != null && !mail.getAttachmentIds().isEmpty()) {
+			String[] attachmentIds = mail.getAttachmentIds().split(",");
+			List<Integer> ids = Arrays.stream(attachmentIds).map(Integer::parseInt).collect(Collectors.toList());
+
+			List<Attachment> attachments = attachmentService.listByIds(ids);
+			mailDetails.setAttachments(attachments);
+		}
+		return Result.success(mailDetails);
 	}
 }

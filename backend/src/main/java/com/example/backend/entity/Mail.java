@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class Mail implements Serializable
 	private Integer id;
 	private String theme;
 	private String content;
-	private String attachmentName;
+	private String attachmentName; // 存储附件的 ID 列表
 	private Long size;
 	private String url;
 	private Integer senderId;
@@ -31,4 +32,7 @@ public class Mail implements Serializable
 	private Integer ownerId;
 	private Integer star;
 	private Integer readis;
+	@TableField("attachment_ids")
+	private String attachmentIds;
+
 }
