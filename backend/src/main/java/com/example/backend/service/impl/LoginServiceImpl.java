@@ -32,6 +32,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult logout() {
         // 从SecurityContextHolder中清除认证信息
         SecurityContextHolder.clearContext();
+        // 移除token认证
         return new ResponseResult(200, "登出成功");
     }
 
@@ -52,12 +53,11 @@ public class LoginServiceImpl implements LoginService {
         // 认证通过
         if (authenticateResult) {
             // 认证通过，使用userid生成jwt，jwt存入ResponseResult返回
-//            User authenticatedUser = (User) authenticate.getPrincipal();
-//            String jwt = JwtUtil.createJWT(authenticatedUser.getId().toString(), null);
-//            Map<String, String> map = new HashMap<>();
-//            map.put("token", jwt);
+            String jwt = JwtUtil.createJWT(user.getId().toString(), null);
+            Map<String, String> map = new HashMap<>();
+            map.put("token", jwt);
             System.out.println("find user!");
-            return new ResponseResult(200, "登录成功");
+            return new ResponseResult(200, "登录成功", jwt);
         } else {
             // 认证没通过，给出提示
             return new ResponseResult(303, "登录失败");
