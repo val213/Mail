@@ -53,20 +53,24 @@ public class MailController
 		String originalFilename=mailSendDTO.getMultipartFile()
 		                                   .getOriginalFilename();
 		assert originalFilename!=null;
-		String extendedname=originalFilename.substring(originalFilename.lastIndexOf("."));
-		String url=aliOssUtil.upload(mailSendDTO.getMultipartFile()
-		                                        .getBytes(),UUID.randomUUID() + extendedname,originalFilename);
+		if(!originalFilename.isEmpty())
+		{
+			String extendedname=originalFilename.substring(originalFilename.lastIndexOf("."));
+			String url=aliOssUtil.upload(mailSendDTO.getMultipartFile()
+			                                        .getBytes(),UUID.randomUUID() + extendedname,originalFilename);
+			mail.setAttachmentName(originalFilename);
+			mail.setUrl(url);
+		}
 		mail.setSendTime(LocalDateTime.now());
 		mail.setSize(mailSendDTO.getMultipartFile()
 		                        .getSize());
-		mail.setAttachmentName(originalFilename);
-		mail.setUrl(url);
 		User targetUser=userService.getOne(new QueryWrapper<>(User.class).eq("email_address",
 				mailSendDTO.getTargetEmailAddress()));
 		mail.setReceiverId(targetUser.getId());
 		mail.setOwnerId(mail.getSenderId());
 		mailService.save(mail);
 		mail.setOwnerId(mail.getReceiverId());
+		mail.setId(null);
 		mailService.save(mail);
 		return Result.success();
 	}
@@ -104,7 +108,7 @@ public class MailController
 			                             .sendTime(mail.getSendTime()
 			                                           .format(DateTimeFormatter.ofPattern("yyyy" + "/MM/dd " + "HH" + ":mm")))
 			                             .star(mail.getStar())
-			                             .read(mail.getRead())
+			                             .read(mail.getReadis())
 			                             .build());
 		}
 		return Result.success(new PageResult(mailPage.getTotal(),mailViewVOList));

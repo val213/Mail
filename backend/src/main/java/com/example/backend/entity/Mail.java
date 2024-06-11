@@ -30,5 +30,5 @@ public class Mail implements Serializable
 	private LocalDateTime sendTime;
 	private Integer ownerId;
 	private Integer star;
-	private Integer read;
+	private Integer readis;
 }
