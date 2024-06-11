@@ -77,10 +77,16 @@ public class MailController
 	@CrossOrigin
 	public Result<PageResult> view(@RequestBody MailViewDTO mailViewDTO)
 	{
-		QueryWrapper<Mail> mailQueryWrapper=new QueryWrapper<Mail>().eq(mailViewDTO.getType()==1,"sender_id",
-				                                                            mailViewDTO.getUserId())
-		                                                            .eq(mailViewDTO.getType()==2,"receiver_id",
-				                                                            mailViewDTO.getUserId())
+		QueryWrapper<Mail> mailQueryWrapper=
+				new QueryWrapper<Mail>().eq(mailViewDTO.getType()!=null && mailViewDTO.getType()==1,"sender_id",
+						                        mailViewDTO.getUserId())
+		                                                            .eq(mailViewDTO.getType()!=null && mailViewDTO.getType()==2,"receiver_id",mailViewDTO.getUserId())
+		                                                            .eq(mailViewDTO.getStar()!=null && mailViewDTO.getStar()==1,"star",1)
+		                                                            .eq(mailViewDTO.getStar()!=null && mailViewDTO.getStar()==0,"star",0)
+		                                                            .eq(mailViewDTO.getRead()!=null && mailViewDTO.getRead()==0,"read",0)
+		                                                            .eq(mailViewDTO.getRead()!=null && mailViewDTO.getRead()==1,"read",1)
+		                                                            .like(mailViewDTO.getTheme()!=null,"theme",
+				                                                            mailViewDTO.getTheme())
 		                                                            .eq("owner_id",mailViewDTO.getUserId());
 		Page<Mail> mailPage=mailService.page(new Page<>(mailViewDTO.getPageNumber(),mailViewDTO.getPageSize()),
 				mailQueryWrapper);
@@ -97,6 +103,8 @@ public class MailController
 			                                                          .getUsername())
 			                             .sendTime(mail.getSendTime()
 			                                           .format(DateTimeFormatter.ofPattern("yyyy" + "/MM/dd " + "HH" + ":mm")))
+			                             .star(mail.getStar())
+			                             .read(mail.getRead())
 			                             .build());
 		}
 		return Result.success(new PageResult(mailPage.getTotal(),mailViewVOList));
@@ -115,42 +123,32 @@ public class MailController
 	
 	
 	@Operation(summary="批量星标邮件")
-	@RequestMapping(value="/mail/star/{userId}", method=RequestMethod.PUT)
+	@RequestMapping(value="/mail/star", method=RequestMethod.PUT)
 	@CrossOrigin
-	public Result<?> starBatch(@PathVariable Integer userId,@RequestParam List<Integer> ids)
+	public Result<?> starBatch(@RequestParam List<Integer> ids)
 	{
-		User user=userService.getById(userId);
-		if(user.getStarMailIds()==null)
+		Mail mail;
+		for(int id: ids)
 		{
-			user.setStarMailIds(ids);
-			userService.update(user);
-		}
-		else
-		{
-			List<Integer> starMailIds=user.getStarMailIds();
-			starMailIds.addAll(ids);
-			starMailIds=starMailIds.stream()
-			                       .distinct()
-			                       .toList();
-			user.setStarMailIds(starMailIds);
-			userService.update(user);
+			mail=mailService.getById(id);
+			mail.setStar(1);
+			mailService.updateById(mail);
 		}
 		return Result.success();
 	}
 	
 	
 	@Operation(summary="批量取消星标邮件")
-	@RequestMapping(value="/mail/cancelstar/{userId}", method=RequestMethod.PUT)
+	@RequestMapping(value="/mail/cancelstar", method=RequestMethod.PUT)
 	@CrossOrigin
-	public Result<?> cancelstarBatch(@PathVariable Integer userId,@RequestParam List<Integer> ids)
+	public Result<?> cancelstarBatch(@RequestParam List<Integer> ids)
 	{
-		User user=userService.getById(userId);
-		if(user.getStarMailIds()!=null)
+		Mail mail;
+		for(int id: ids)
 		{
-			List<Integer> starMailIds=user.getStarMailIds();
-			starMailIds.removeAll(ids);
-			user.setStarMailIds(starMailIds);
-			userService.update(user);
+			mail=mailService.getById(id);
+			mail.setStar(0);
+			mailService.updateById(mail);
 		}
 		return Result.success();
 	}
