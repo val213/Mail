@@ -53,7 +53,7 @@ public class LoginServiceImpl implements LoginService {
         // 认证通过
         if (authenticateResult) {
             // 认证通过，使用userid生成jwt，jwt存入ResponseResult返回
-            String jwt = JwtUtil.createJWT(user.getId().toString(), null);
+            String jwt = JwtUtil.createJWT(userMapper.findUserByEmail(user.getEmailAddress()).toString(), null);
             Map<String, String> map = new HashMap<>();
             map.put("token", jwt);
             System.out.println("find user!");
