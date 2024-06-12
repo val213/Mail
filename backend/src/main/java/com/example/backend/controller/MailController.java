@@ -173,8 +173,8 @@ public class MailController {
 		if (mail.getAttachmentIds() != null && !mail.getAttachmentIds().isEmpty()) {
 			String[] attachmentIds = mail.getAttachmentIds().split(",");
 			List<Integer> ids = Arrays.stream(attachmentIds).map(Integer::parseInt).collect(Collectors.toList());
-
 			List<Attachment> attachments = attachmentService.listByIds(ids);
+			log.info("attachments = " + attachments);
 			mailDetails.setAttachments(attachments);
 		}
 		return Result.success(mailDetails);

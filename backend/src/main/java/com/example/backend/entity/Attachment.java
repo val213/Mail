@@ -23,9 +23,11 @@ public class Attachment implements Serializable {
     private Integer id; // 附件的唯一标识符
     @TableField("file_name")
     private String fileName; // 附件的文件名
+    @TableField("mime_type")
     private String mimeType; // 附件的MIME类型
     @TableField("file_size")
     private Long size; // 附件的大小（字节）
+    @TableField("created_at")
     private LocalDateTime createdAt; // 创建时间
     @TableField("download_url")
     private String downloadUrl; // 附件的下载链接
