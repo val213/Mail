@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mail@localhost" uuid="814b148a-1853-4804-bba0-2dd7084f4dc7">
+    <data-source source="LOCAL" name="mail@rm-cn-27a3ougjg0001sso.rwlb.rds.aliyuncs.com" uuid="814b148a-1853-4804-bba0-2dd7084f4dc7">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>

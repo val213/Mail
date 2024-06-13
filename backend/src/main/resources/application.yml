@@ -20,6 +20,19 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+aliyunoss:
+  endpoint: ${aliyunoss.endpoint}
+  accessKeyId: ${aliyunoss.accessKeyId}
+  accessKeySecret: ${aliyunoss.accessKeySecret}
+  bucketName: ${aliyunoss.bucketName}
+
+aliyunsms:
+  access-key-id: ${aliyunsms.accessKeyId}
+  access-key-secret: ${aliyunsms.accessKeySecret}
+  sign-name: ${aliyunsms.signName}
+  template-code: ${aliyunsms.templateCode}
+  product: ${aliyunsms.product}
+  domain: ${aliyunsms.domain}
 
 
 #test
