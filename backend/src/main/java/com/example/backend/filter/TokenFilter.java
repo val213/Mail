@@ -16,6 +16,8 @@ public class TokenFilter implements HandlerInterceptor {
         }
         response.setCharacterEncoding("utf-8");
         String token = request.getHeader("Authorization");
+        token = token.substring(7);
+        System.out.println(token);
         if(token != null){
             boolean result = isVaildToken(token);
             if(result){
