@@ -18,5 +18,5 @@ public class MailSendDTO implements Serializable
 	private String targetEmailAddress;
 	private String theme;
 	private String content;
-	private MultipartFile multipartFile;
+
 }

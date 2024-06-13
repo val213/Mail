@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import java.util.Optional;
 @Slf4j
 @Tag(name="邮件模块")
 @RestController
@@ -50,24 +51,42 @@ public class MailController {
 	@Operation(summary = "发送邮件")
 	@RequestMapping(value = "/mail/send", method = RequestMethod.POST)
 	@CrossOrigin
-	public Result<?> sendMail(MailSendDTO mailSendDTO) throws IOException
+	public Result<?> sendMail(@ModelAttribute MailSendDTO mailSendDTO,  @RequestParam("multipleFiles") Optional<List<MultipartFile>> multipleFiles) throws IOException
 	{
+		// 打印获取的请求参数
+		log.info("发送邮件基础参数：" + mailSendDTO);
+		log.info("附件有吗："+ multipleFiles.isPresent());
 		Mail mail=new Mail();
+		List<String> attachmentIds = new ArrayList<>();
 		BeanUtils.copyProperties(mailSendDTO,mail);
-		String originalFilename=mailSendDTO.getMultipartFile()
-		                                   .getOriginalFilename();
-		assert originalFilename!=null;
-		if(!originalFilename.isEmpty())
-		{
-			String extendedname=originalFilename.substring(originalFilename.lastIndexOf("."));
-			String url=aliOssUtil.upload(mailSendDTO.getMultipartFile()
-			                                        .getBytes(),UUID.randomUUID() + extendedname,originalFilename);
-			mail.setAttachmentName(originalFilename);
-			mail.setUrl(url);
+		if (multipleFiles.isEmpty()){
+			log.info("没有附件");
 		}
+		else
+		{
+			for (MultipartFile multipartFile : multipleFiles.get()) {
+				String originalFilename = multipartFile.getOriginalFilename();
+				assert originalFilename != null;
+				if (!originalFilename.isEmpty()) {
+					String extendedname = originalFilename.substring(originalFilename.lastIndexOf("."));
+					String url = aliOssUtil.upload(multipartFile.getBytes(), UUID.randomUUID() + extendedname, originalFilename);
+
+					Attachment attachment = new Attachment();
+					attachment.setFileName(originalFilename);
+					attachment.setDownloadUrl(url);
+					attachment.setSize(multipartFile.getSize());
+					attachment.setMimeType(multipartFile.getContentType());
+					attachment.setCreatedAt(LocalDateTime.now());
+					attachmentService.save(attachment); // 保存到数据库
+
+					attachmentIds.add(String.valueOf(attachment.getId())); // 添加ID到列表
+				}
+			}
+        }
 		mail.setSendTime(LocalDateTime.now());
-		mail.setSize(mailSendDTO.getMultipartFile()
-		                        .getSize());
+		mail.setAttachmentIds(String.join(",", attachmentIds)); // 设置attachmentIds字段
+		// 打印收件人
+		log.info("收件人邮箱地址：" + mailSendDTO.getTargetEmailAddress());
 		User targetUser=userService.getOne(new QueryWrapper<>(User.class).eq("email_address",
 				mailSendDTO.getTargetEmailAddress()));
 		mail.setReceiverId(targetUser.getId());

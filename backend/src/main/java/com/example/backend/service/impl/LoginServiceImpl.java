@@ -57,7 +57,10 @@ public class LoginServiceImpl implements LoginService {
             Map<String, String> map = new HashMap<>();
             map.put("token", jwt);
             System.out.println("find user!");
-            return new ResponseResult(200, "登录成功", jwt);
+            // 返回用户的信息和jwt
+            ResponseResult<User> responseResult = new ResponseResult(200, "登录成功", jwt);
+            responseResult.setData(userMapper.findUserByEmail(user.getEmailAddress())); // 设置用户信息
+            return responseResult;
         } else {
             // 认证没通过，给出提示
             return new ResponseResult(303, "登录失败");
