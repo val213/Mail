@@ -23,9 +23,6 @@ public class Mail implements Serializable
 	private Integer id;
 	private String theme;
 	private String content;
-	private String attachmentName; // 存储附件的 ID 列表
-	private Long size;
-	private String url;
 	private Integer senderId;
 	private Integer receiverId;
 	private LocalDateTime sendTime;

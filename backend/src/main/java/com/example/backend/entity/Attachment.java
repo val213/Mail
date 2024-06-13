@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Builder
 @TableName("attachment")
 public class Attachment implements Serializable {
-    @TableId(value = "id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id; // 附件的唯一标识符
     @TableField("file_name")
     private String fileName; // 附件的文件名
