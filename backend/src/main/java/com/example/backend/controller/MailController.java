@@ -91,6 +91,14 @@ public class MailController {
 				mailSendDTO.getTargetEmailAddress()));
 		mail.setReceiverId(targetUser.getId());
 		mail.setOwnerId(mail.getSenderId());
+		mail.setStar(0);
+		mail.setReadis(0);
+		// 判断是否是草稿
+		if (mailSendDTO.getDraft() == 1) {
+			mail.setDraft(1);
+		} else {
+			mail.setDraft(0);
+		}
 		mailService.save(mail);
 		mail.setOwnerId(mail.getReceiverId());
 		mail.setId(null);
@@ -110,8 +118,10 @@ public class MailController {
 		                                                            .eq(mailViewDTO.getType()!=null && mailViewDTO.getType()==2,"receiver_id",mailViewDTO.getUserId())
 		                                                            .eq(mailViewDTO.getStar()!=null && mailViewDTO.getStar()==1,"star",1)
 		                                                            .eq(mailViewDTO.getStar()!=null && mailViewDTO.getStar()==0,"star",0)
-		                                                            .eq(mailViewDTO.getRead()!=null && mailViewDTO.getRead()==0,"read",0)
-		                                                            .eq(mailViewDTO.getRead()!=null && mailViewDTO.getRead()==1,"read",1)
+		                                                            .eq(mailViewDTO.getReadis()!=null && mailViewDTO.getReadis()==0,"readis",0)
+		                                                            .eq(mailViewDTO.getReadis()!=null && mailViewDTO.getReadis()==1,"readis",1)
+																	.eq(mailViewDTO.getDraft()!=null && mailViewDTO.getDraft()==1,"draft",1)
+																	.eq(mailViewDTO.getDraft()!=null && mailViewDTO.getDraft()==0,"draft",0)
 		                                                            .like(mailViewDTO.getTheme()!=null,"theme",
 				                                                            mailViewDTO.getTheme())
 		                                                            .eq("owner_id",mailViewDTO.getUserId());
@@ -188,12 +198,20 @@ public class MailController {
 		}
 		MailDetailsDTO mailDetails = new MailDetailsDTO();
 		BeanUtils.copyProperties(mail, mailDetails);
+		User sender = userService.getById(mail.getSenderId());
+		User receiver = userService.getById(mail.getReceiverId());
+		mailDetails.setSenderName(sender.getUsername());
+		mailDetails.setReceiverName(receiver.getUsername());
 		// 获取附件信息
 		if (mail.getAttachmentIds() != null && !mail.getAttachmentIds().isEmpty()) {
 			String[] attachmentIds = mail.getAttachmentIds().split(",");
 			List<Integer> ids = Arrays.stream(attachmentIds).map(Integer::parseInt).collect(Collectors.toList());
 			List<Attachment> attachments = attachmentService.listByIds(ids);
 			log.info("attachments = " + attachments);
+			// 转换附件大小的单位为MB
+			for (Attachment attachment : attachments) {
+				attachment.setSize(attachment.getSize() / 1024);
+			}
 			mailDetails.setAttachments(attachments);
 		}
 		return Result.success(mailDetails);
