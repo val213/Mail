@@ -29,6 +29,7 @@ public class Mail implements Serializable
 	private Integer ownerId;
 	private Integer star;
 	private Integer readis;
+	private Integer draft;
 	@TableField("attachment_ids")
 	private String attachmentIds;
 
