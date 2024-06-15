@@ -21,7 +21,7 @@ public class ResponseResult <T>{
      * 查询到的结果数据，
      */
     private T data;
-
+    private String token;
     public ResponseResult(Integer code, String msg) {
         this.status = code;
         this.msg = msg;
@@ -65,9 +65,22 @@ public class ResponseResult <T>{
         this.data = data;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public ResponseResult(Integer code, String msg, T data) {
         this.status = code;
         this.msg = msg;
         this.data = data;
+    }
+    public ResponseResult(Integer code, String msg, String token) {
+        this.status = code;
+        this.msg = msg;
+        this.token = token;
     }
 }
