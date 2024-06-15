@@ -16,6 +16,10 @@ public class TokenFilter implements HandlerInterceptor {
         }
         response.setCharacterEncoding("utf-8");
         String token = request.getHeader("Authorization");
+        if(token == null || token.length() < 7){
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            return false;
+        }
         token = token.substring(7);
         System.out.println(token);
         if(token != null){
@@ -25,13 +29,8 @@ public class TokenFilter implements HandlerInterceptor {
                 return result;
             }
         }
-        try{
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "token verity fail");
-            System.out.println("未通过token验证");
-        } catch(Exception e){
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return false;
-        }
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "token verity fail");
+        System.out.println("未通过token验证");
         return false;
     }
 
