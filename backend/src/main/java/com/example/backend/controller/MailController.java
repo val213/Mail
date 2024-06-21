@@ -142,6 +142,7 @@ public class MailController {
 			                                           .format(DateTimeFormatter.ofPattern("yyyy" + "/MM/dd " + "HH" + ":mm")))
 			                             .star(mail.getStar())
 			                             .read(mail.getReadis())
+					                     .Summary(mail.getContent().length() > 20 ? mail.getContent().substring(0, 20) : mail.getContent())
 			                             .build());
 		}
 		return Result.success(new PageResult(mailPage.getTotal(), mailViewVOList));
@@ -215,5 +216,22 @@ public class MailController {
 			mailDetails.setAttachments(attachments);
 		}
 		return Result.success(mailDetails);
+	}
+
+	@Operation(summary = "切换已读/未读状态")
+	@RequestMapping(value = "/mail/read/{mailId}", method = RequestMethod.PUT)
+	@CrossOrigin
+	public Result<?> read(@PathVariable Integer mailId) {
+		Mail mail = mailService.getById(mailId);
+		if (mail == null) {
+			return Result.error("邮件不存在");
+		}
+		if (mail.getReadis() == 0) {
+			mail.setReadis(1);
+		} else {
+			mail.setReadis(0);
+		}
+		mailService.updateById(mail);
+		return Result.success();
 	}
 }
