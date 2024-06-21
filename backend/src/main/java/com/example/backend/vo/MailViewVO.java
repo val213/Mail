@@ -20,4 +20,5 @@ public class MailViewVO implements Serializable
 	private String sendTime;
 	private Integer star;
 	private Integer read;
+	private String Summary;
 }
