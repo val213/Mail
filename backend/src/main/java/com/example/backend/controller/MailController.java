@@ -122,6 +122,8 @@ public class MailController {
 		                                                            .eq(mailViewDTO.getReadis()!=null && mailViewDTO.getReadis()==1,"readis",1)
 																	.eq(mailViewDTO.getDraft()!=null && mailViewDTO.getDraft()==1,"draft",1)
 																	.eq(mailViewDTO.getDraft()!=null && mailViewDTO.getDraft()==0,"draft",0)
+																	.eq(mailViewDTO.getJunk()!=null && mailViewDTO.getJunk()==1,"junk",1)
+																	.eq(mailViewDTO.getJunk()!=null && mailViewDTO.getJunk()==0,"junk",0)
 		                                                            .like(mailViewDTO.getTheme()!=null,"theme",
 				                                                            mailViewDTO.getTheme())
 		                                                            .eq("owner_id",mailViewDTO.getUserId());
@@ -142,7 +144,10 @@ public class MailController {
 			                                           .format(DateTimeFormatter.ofPattern("yyyy" + "/MM/dd " + "HH" + ":mm")))
 			                             .star(mail.getStar())
 			                             .read(mail.getReadis())
+										 .draft(mail.getDraft())
+			                             // 如果邮件内容长度大于20，截取前20个字符，否则取全部内容
 					                     .Summary(mail.getContent().length() > 20 ? mail.getContent().substring(0, 20) : mail.getContent())
+										 .junk(mail.getJunk())
 			                             .build());
 		}
 		return Result.success(new PageResult(mailPage.getTotal(), mailViewVOList));
@@ -153,7 +158,16 @@ public class MailController {
 	@RequestMapping(value = "/mail/delete", method = RequestMethod.DELETE)
 	@CrossOrigin
 	public Result<?> deleteBatch(@RequestParam List<Integer> ids) {
-		mailService.removeBatchByIds(ids);
+		// 删除邮件之前判断junk字段是否为1
+		for (int id : ids) {
+			Mail mail = mailService.getById(id);
+			if (mail.getJunk() == 1) {
+				mailService.removeById(id);
+			}else{
+				mail.setJunk(1);
+				mailService.updateById(mail);
+			}
+		}
 		return Result.success();
 	}
 	

@@ -21,4 +21,5 @@ public class MailViewDTO implements Serializable
 	private Integer pageNumber;
 	private Integer pageSize;
 	private Integer draft;// 0非草稿1为草稿
+	private Integer junk;// 0非丢弃1为丢弃
 }
