@@ -21,4 +21,6 @@ public class MailViewVO implements Serializable
 	private Integer star;
 	private Integer read;
 	private String Summary;
+	private Integer draft;
+	private Integer junk;
 }

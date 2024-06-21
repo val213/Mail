@@ -32,5 +32,7 @@ public class Mail implements Serializable
 	private Integer draft;
 	@TableField("attachment_ids")
 	private String attachmentIds;
+	@TableField("junk")
+	private Integer junk;
 
 }
