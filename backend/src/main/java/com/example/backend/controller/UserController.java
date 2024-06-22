@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -26,6 +28,9 @@ public class UserController
 
     @Autowired
     private SignupService signupService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private VerificationService verificationService;
@@ -63,6 +68,19 @@ public class UserController
         System.out.println("telephone in controller: " + telephone);
         // 调用发送验证码服务
         return  verificationService.sendVerificationCode(telephone);
+    }
+
+    //修改用户名
+    @PostMapping("/user/edit")
+    public Result<?> userEdit(@RequestBody Map<String, String> map){
+        String userEmail = map.get("userEmail");
+        String newUserName = map.get("newUserName");
+
+        //先获取用户
+        User getUser = userService.getUserByEmail(userEmail);
+        if(getUser==null)return Result.error("查找不到该用户！");
+        getUser.setUsername(newUserName);
+        return userService.update(getUser);
     }
 }
 

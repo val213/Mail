@@ -17,12 +17,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     public Result<User> update(User user){
         Result<User> result = new Result<>();
-        User getuser = userMapper.findUserByName(user.getUsername());
-        if(getuser == null) {
-            return Result.error("不存在该用户！");
-        }
         //修改用户
         userMapper.editorUser(user);
         return Result.success();
+    }
+
+    @Override
+    public User getUserByEmail(String email){
+        User getUser = userMapper.findUserByEmail(email);
+        if(getUser == null) return null;
+        return getUser;
     }
 }
