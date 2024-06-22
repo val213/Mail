@@ -11,7 +11,7 @@ Hi~ 这里是华南理工大学软件开发实训作品：邮件系统——**�
 ## 技术栈
 前端使用 `Vue3 + vue-cli` 框架和 `element-plus` 组件库 ，后端使用 `Springboot` 框架，数据库使用 `MySQL` 远程数据库和 `mybaits` ， 云服务器和短信服务都使用 `阿里云` 的产品，AI服务使用 `智谱清言` 的接口。
 ## 贡献者（6）
-### 后端代码贡献者(4)
+### 后端代码贡献者（4）
 <a href="https://github.com/val213/Mail/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=val213/Mail" />
 </a>
@@ -91,7 +91,7 @@ npm run build
 
 ## 数据库设计
 绘制并根据E-R图将数据放在多个表中
-![E-R图](frontend\src\assets\E-R图.png)
+![E-R图](https://github.com/val213/Mail-frontend/blob/main/src/assets/E-R%E5%9B%BE.png?raw=true)
 服务器将邮件正文和附件进行分离存储(将邮件本体存储数据库中，附件存储在磁盘)
 
 ### user
