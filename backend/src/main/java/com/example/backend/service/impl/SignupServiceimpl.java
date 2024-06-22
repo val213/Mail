@@ -45,11 +45,11 @@ public class SignupServiceimpl implements SignupService {
         }
 
 
-/*        // 用户不存在，就开始创建新用户，首先需要比对验证码信息的正确性
+       // 用户不存在，就开始创建新用户，首先需要比对验证码信息的正确性
         if (!verificationService.verifyCode(user.getTelephone(), code)) {
             return Result.error("验证码错误！");
 
-        }*/
+        }
 
         //符合注册新用户的条件，通过mapper对数据库进行操作
 
