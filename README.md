@@ -42,8 +42,22 @@ Hi~ 这里是华南理工大学软件开发实训作品：邮件系统——**�
 - **服务端数据库设计合理**：根据E-R图设计数据库，将数据放在多个表中，保证数据的一致性和完整性
 
 ## 项目设计
-### 项目架构图
-![架构图](https://github.com/val213/Mail-frontend/blob/main/src/assets/Architecture.png)
+### 项目架构
+| 层次                             | 内容和功能|
+|:----------------------------------------------------------:|:--------------------:|
+| 数据层（Data Layer）                                     | Mapper接口和映射文件 |
+| 服务层（Service Layer）                                  | 服务接口和实现类   |
+| 控制层（Controller Layer）                               | Controller类       |
+| 工具类和帮助类（Utility Classes）                        | 工具类和帮助类     |
+| 实体类（Entities）                                       | Java实体类         |
+| 配置类（Configuration Classes）                          | 配置类             |
+| 数据传输对象（DTOs）                                     | 用于服务层与控制层的数据交换 |
+| 视图对象（VOs）                                         | 用于封装展示给用户的数据   |
+| 邮件模块（Mail Module）                                  | 邮件处理接口和实现 |
+| 身份验证与权限控制（Authentication & Authorization）       | 安全配置           |
+| API 文档生成（API Documentation）                        | Swagger            |
+| AI 服务（AI Service）                                    | AI服务接口和实现   |
+| 其他（Miscellaneous）                                    | 过滤器、DTO、枚举等 |
 ### 设计原型图
 ![原型图](https://github.com/val213/Mail-frontend/blob/main/src/assets/%E5%8E%9F%E5%9E%8B%E5%9B%BE.png?raw=true)
 ## 后续可拓展功能
