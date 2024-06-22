@@ -19,4 +19,7 @@ public class MailSendDTO implements Serializable
 	private String theme;
 	private String content;
 	private Integer draft;
+	private Integer star;
+	private Integer readis;
+	private Integer junk;
 }
