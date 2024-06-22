@@ -7,5 +7,8 @@ import com.example.backend.result.Result;
 public interface UserService extends IService<User>
 {
     //修改用户信息，更新用户信息
-    public Result<User> update(User user);
+    Result<User> update(User user);
+
+    //使用用户邮箱获取用户信息
+    User getUserByEmail(String email);
 }
