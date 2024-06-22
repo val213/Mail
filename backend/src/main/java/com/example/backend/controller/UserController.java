@@ -52,7 +52,7 @@ public class UserController
         logger.info("用户名: " + user.getUsername());
         logger.info("密码: " + user.getPassword());
         logger.info("完整的 User 对象: " + user.toString());
-
+        logger.info("验证码: " + verifycode);
         // 检查校验结果
         if (errors.hasErrors()) {
             return Result.error("Validation校验失败，http的body不为JSON格式的数据！");

@@ -83,15 +83,21 @@ public class VerificationServiceImpl implements VerificationService {
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         request.setTemplateParam("{\"name\":\"Tom\", \"code\":\"" + code + "\"}");
         // hint 此处可能会抛出异常，注意catch
-        SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-        if (sendSmsResponse.getCode() != null) {
-            if (sendSmsResponse.getCode().equals("OK")) {
-                // 请求成功
-                System.out.println("短信发送成功");
-            } else {
-                // 请求失败
-                System.out.println("短信发送失败，错误码：" + sendSmsResponse.getCode() + "，错误信息：" + sendSmsResponse.getMessage());
+        try {
+            SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+            if (sendSmsResponse.getCode() != null) {
+                if (sendSmsResponse.getCode().equals("OK")) {
+                    // 请求成功
+                    System.out.println("短信发送成功");
+                } else {
+                    // 请求失败
+                    System.out.println("短信发送失败，错误码：" + sendSmsResponse.getCode() + "，错误信息：" + sendSmsResponse.getMessage());
+                }
             }
+        } catch (ClientException e) {
+            // 打印异常信息
+            e.printStackTrace();
+            // 或者你可以选择其他方式处理这个异常，比如记录日志，或者抛出运行时异常
         }
     }
 
