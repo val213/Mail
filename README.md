@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="WangXiangEditor" src="frontend\src\assets\logo.png">
+<img alt="云信Mail" src="https://github.com/val213/Mail-frontend/blob/main/src/assets/logo.png?raw=true">
 <br>
 云信，更便捷的邮箱系统
 <br><br>
@@ -43,9 +43,9 @@ Hi~ 这里是华南理工大学软件开发实训作品：邮件系统——**�
 
 ## 项目设计
 ### 项目架构图
-![架构图](frontend\src\assets\架构图.png)
+![架构图](https://github.com/val213/Mail-frontend/blob/main/src/assets/Architecture.png)
 ### 设计原型图
-![原型图](frontend\src\assets\原型图.png)
+![原型图](https://github.com/val213/Mail-frontend/blob/main/src/assets/%E5%8E%9F%E5%9E%8B%E5%9B%BE.png?raw=true)
 ## 后续可拓展功能
 - **邮件分类**：用户可以将邮件分类，例如工作、学习、生活等，方便用户查找邮件。
 - **邮件标签**：用户可以给邮件打标签，例如重要、紧急、待办等，方便用户查找邮件。
