@@ -34,5 +34,7 @@ public class Mail implements Serializable
 	private String attachmentIds;
 	@TableField("junk")
 	private Integer junk;
+	@TableField("cc")
+	private String ccEmailAddresses;
 
 }

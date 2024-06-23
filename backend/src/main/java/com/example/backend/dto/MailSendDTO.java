@@ -22,4 +22,5 @@ public class MailSendDTO implements Serializable
 	private Integer star;
 	private Integer readis;
 	private Integer junk;
+	private String ccEmailAddresses;
 }

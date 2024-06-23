@@ -12,11 +12,12 @@ public class MailDetailsDTO {
         private Integer receiverId;
         private String senderName;
         private String receiverName;
-        private List<String> cc;
+        private String ccEmailAddresses;
         private List<String> bcc;
         private String theme;
         private String content;
         private LocalDateTime sendTime;
         private List<Attachment> attachments;
+
 
 }
