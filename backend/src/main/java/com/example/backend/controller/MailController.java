@@ -103,6 +103,22 @@ public class MailController {
 		mail.setOwnerId(mail.getReceiverId());
 		mail.setId(null);
 		mailService.save(mail);
+		// 在 sendMail 方法中处理抄送的邮箱地址
+		String ccEmailAddresses = mailSendDTO.getCcEmailAddresses();
+		if (ccEmailAddresses != null && !ccEmailAddresses.isEmpty()) {
+			String[] ccEmails = ccEmailAddresses.split(",");
+			for (String ccEmail : ccEmails) {
+				Mail ccMail = new Mail();
+				BeanUtils.copyProperties(mail, ccMail); // 复制原始邮件的所有属性
+				ccMail.setId(null); // 设置 id 为 null，以便创建一个新的邮件
+				User ccUser = userService.getOne(new QueryWrapper<>(User.class).eq("email_address", ccEmail));
+				if (ccUser != null) {
+					ccMail.setReceiverId(ccUser.getId()); // 设置接收者 ID 为抄送用户的 ID
+					ccMail.setOwnerId(ccUser.getId()); // 设置邮件的所有者 ID 为抄送用户的 ID
+					mailService.save(ccMail); // 保存抄送的邮件
+				}
+			}
+		}
 		return Result.success();
 	}
 
@@ -178,10 +194,12 @@ public class MailController {
 	public Result<?> starBatch(@RequestParam List<Integer> ids)
 	{
 		Mail mail;
+		log.info("ids = " + ids);
 		for(int id: ids)
 		{
 			mail=mailService.getById(id);
 			mail.setStar(1);
+			log.warn("mail star = " + mail.getStar());
 			mailService.updateById(mail);
 		}
 		return Result.success();
@@ -217,6 +235,7 @@ public class MailController {
 		User receiver = userService.getById(mail.getReceiverId());
 		mailDetails.setSenderName(sender.getUsername());
 		mailDetails.setReceiverName(receiver.getUsername());
+		mailDetails.setCcEmailAddresses(mail.getCcEmailAddresses());
 		// 获取附件信息
 		if (mail.getAttachmentIds() != null && !mail.getAttachmentIds().isEmpty()) {
 			String[] attachmentIds = mail.getAttachmentIds().split(",");

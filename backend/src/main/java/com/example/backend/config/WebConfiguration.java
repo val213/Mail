@@ -27,6 +27,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         excludePath.add("/user/login");
         excludePath.add("/user/register");
         excludePath.add("/user/sendverifycode");
+        excludePath.add("/mail/maildetails/{mailId}");
 
         registry.addInterceptor(tokenFilter)
                 .addPathPatterns("/**")
