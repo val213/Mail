@@ -22,22 +22,24 @@ Hi~ 这里是华南理工大学软件开发实训作品：邮件系统——**�
 </a>
 
 ## 项目Feature
+- **🔥邮件和附件分离、均采用云端存储**：支持使用阿里云服务器和对象存储服务分别存储附件和数据库。
 - **邮箱注册**：云信Mail提供注册功能，用户可以用手机号注册邮箱，经过短信验证码验证，获得专属邮箱地址后缀 `"@yunxin.com"` 。服务器保存用户信息到数据库中，用于用户登录邮箱时验证。
 - **接收邮件**：一旦用户登录了电子邮件账户，云信Mail基于HTTP协议，可以自动连接到邮件服务器并下载新邮件，一旦新邮件被下载，用户可以在收件箱中查看。
 - **发送邮件**：通过HTTP协议与邮件服务器进行通信以发送邮件，用户需要在表单中提供收件人地址、抄送、主题、邮件内容、上传的附件（可选）。
-- **AI支持**：目前用户可以在阅读邮件的时候让AI自动总结邮件内容，方便用户快速了解邮件内容。
-- **标记已读/未读邮件**：用户可以标记邮件为已读或未读，该状态会同步到服务器，在用户下次登录或者在其他设备登录时保持一致。
+- **🔥AI支持**：目前用户可以在阅读邮件的时候让AI自动总结邮件内容，方便用户快速了解邮件内容，并且具有良好的可拓展性，可接入更多丰富的AI服务和个性化配置，如自选大模型接口、微调训练专用agent、实现垃圾邮件检测和翻译等。
+- **🔥标记已读/未读邮件**：用户可以标记邮件为已读或未读，该状态会同步到服务器，在用户下次登录或者在其他设备登录时保持一致。
 - **删除邮件**：用户可以选中批量删除邮件，将邮件移动到垃圾箱，可以进一步删除垃圾箱中的邮件，邮件会被永久删除。
 - **星标邮件**：用户可以将重要的邮件标记为星标邮件，方便查找。
+- **批量管理邮件** 支持多选操作一键应用到所有邮件
 - **草稿箱**：用户可以保存未发送的邮件到草稿箱，下次登录时可以继续编辑。同样是存储在了后端，保证用户在不同设备上登录时草稿箱内容一致。
-- **新邮件到达通知**：当用户收到新邮件时，云信Mail会弹出通知，提醒用户查看新邮件，并更新邮件列表。
+- **🔥新邮件到达通知**：当用户收到新邮件时，云信Mail会弹出通知，提醒用户查看新邮件，并更新邮件列表。
 - **支持搜索、过滤邮件**：用户可以通过关键字搜索邮件，也可以通过发件人、收件人、主题、时间等条件过滤邮件。
 - **客户端和服务端邮件同步**：用户在不同设备上登录时，邮件状态、邮件内容、附件等信息都会同步到用户的设备上。
 - **用户友好的UI界面**：云信Mail提供了简洁、美观的用户界面，用户可以方便地查看邮件、发送邮件、管理邮件。
 - **对RESTFUL接口响应的成功/错误弹窗**：用户在操作时，会有相应的提示，方便用户了解操作结果，提升用户体验。例如成功或者失败(验证失败、操作不合法等)
 - **服务端使用数据库对邮件进行存储**：邮件的元数据和正文，包括附件的元数据，都会存储在数据库中，保证数据的安全性和一致性。
 - 使用MIME发送附件，收件人能下载对应邮件中的附件
-- **客户端本地缓存**：断网时，用户的操作会被缓存，网络恢复后会自动执行
+- **🔥客户端本地缓存**：断网时，用户的操作会被缓存，网络恢复后会自动执行
 - **合理的报文约定**：前后端交互的报文格式合理，包括请求报文和响应报文，保证数据的完整性和一致性
 - **服务端数据库设计合理**：根据E-R图设计数据库，将数据放在多个表中，保证数据的一致性和完整性
 
@@ -60,6 +62,9 @@ Hi~ 这里是华南理工大学软件开发实训作品：邮件系统——**�
 | 其他（Miscellaneous）                                    | 过滤器、DTO、枚举等 |
 ### 设计原型图
 ![原型图](https://github.com/val213/Mail-frontend/blob/main/src/assets/%E5%8E%9F%E5%9E%8B%E5%9B%BE.png?raw=true)
+
+![image](https://github.com/val213/Mail/assets/112376067/22131930-691c-47aa-9428-7776426d2bcd)
+
 ## 后续可拓展功能
 - **邮件分类**：用户可以将邮件分类，例如工作、学习、生活等，方便用户查找邮件。
 - **邮件标签**：用户可以给邮件打标签，例如重要、紧急、待办等，方便用户查找邮件。
@@ -147,3 +152,688 @@ npm run build
 |file_size|bigint|not null|文件大小|
 |download——url|varchar(255)|not null|下载链接|
 |create_time|datetime|not null|创建时间|
+
+
+## 云信Mail接口文档
+
+Base URLs:
+
+* <a href="http://localhost:8080">开发环境: http://localhost:8080</a>
+
+## Authentication
+
+## 邮件模块
+
+<a id="opIdsendMail"></a>
+
+#### POST 发送邮件
+
+POST /mail/send
+
+> Body 请求参数
+
+```yaml
+multipleFiles: string
+senderId: "7"
+targetEmailAddress: wuyong061@yunxin.com
+theme: 测试
+content: 你好
+
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|body|body|object| 否 |none|
+|» multipleFiles|body|string(binary)| 否 |附件|
+|» senderId|body|integer| 否 |发送者id|
+|» targetEmailAddress|body|string| 否 |目标邮箱|
+|» theme|body|string| 否 |主题|
+|» content|body|string| 否 |正文|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {}
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|OK|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer(int32)|false|none||响应码，0失败1成功|
+|» message|string|false|none||响应码为0时会携带错误消息，前端将其用显示在页面上|
+|» data|object|false|none||响应码为1且执行查询数据操作时data会携带响应数据|
+
+#### POST 分页条件查询邮件
+
+POST /mail/view
+
+> Body 请求参数
+
+```json
+"{\r\n  \"type\": 1, // 或者 2，取决于你是想按发送者还是接收者查询\r\n  \"userId\": 7,\r\n  \"pageNumber\": 1, // 页码\r\n  \"pageSize\": 10 ,// 每页显示的记录数\r\n  \"star\": null,\r\n  \"readis\": null,\r\n  \"draft\": 0,\r\n  \"junk\": 0,\r\n}"
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|body|body|object| 否 |none|
+|» userId|body|integer| 是 |当前登录用户id|
+|» type|body|integer| 是 |1我发送的 2我收到的|
+|» star|body|integer| 是 |0非星标1星标|
+|» read|body|integer| 是 |0未读1已读|
+|» theme|body|string| 是 |按邮件主题模糊查询|
+|» pageNumber|body|integer| 是 |页号|
+|» pageSize|body|integer| 是 |页大小|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {
+    "total": 0,
+    "records": [
+      {
+        "id": 0,
+        "senderUsername": "string",
+        "receiverUsername": "string",
+        "theme": "string",
+        "sendTime": "string",
+        "star": 0,
+        "read": 0
+      }
+    ]
+  }
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» message|string|false|none||none|
+|» data|object|false|none||none|
+|»» total|integer|false|none||邮件总数|
+|»» records|[object]|false|none||邮件数组|
+|»»» id|integer|true|none||邮件id|
+|»»» senderUsername|string|true|none||发送者用户名|
+|»»» receiverUsername|string|true|none||接收者用户名|
+|»»» theme|string|true|none||邮件主题|
+|»»» sendTime|string|true|none||发送时间|
+|»»» star|integer|true|none||0非星标1星标|
+|»»» read|integer|true|none||0未读1已读|
+
+#### GET 邮件详情
+
+GET /mail/maildetails/{mailId}
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|mailId|path|string| 是 |none|
+
+> 返回示例
+
+> 成功
+
+```json
+{
+  "status": "success",
+  "data": {
+    "mailId": "邮件的唯一标识符",
+    "senderId": "发件人信息",
+    "receiverId": "收件人信息",
+    "cc": [
+      "抄送人列表"
+    ],
+    "bcc": [
+      "密送人列表"
+    ],
+    "subject": "邮件主题",
+    "content": "邮件文本内容",
+    "sendTime": "发送时间",
+    "attachments": [
+      {
+        "attachmentId": "附件的唯一标识符",
+        "fileName": "附件文件名",
+        "size": "附件大小",
+        "downloadUrl": "附件下载链接"
+      }
+    ]
+  },
+  "message": "获取邮件详情成功",
+  "type": "string"
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|string|
+
+#### DELETE 批量删除邮件
+
+DELETE /mail/delete
+
+> Body 请求参数
+
+```yaml
+{}
+
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|ids|query|array[string]| 否 |邮件id列表|
+|body|body|object| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {}
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||0失败1成功|
+|» message|string|true|none||none|
+|» data|object|true|none||none|
+
+#### PUT 批量星标邮件
+
+PUT /mail/star
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|ids|query|array[string]| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {}
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» message|string|true|none||none|
+|» data|object|true|none||none|
+
+#### PUT 批量取消星标邮件
+
+PUT /mail/cancelstar
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|ids|query|array[string]| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {}
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» message|string|true|none||none|
+|» data|object|true|none||none|
+
+#### PUT 标记邮件阅读状态
+
+PUT /mail/read/{mailId}
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|mailId|path|string| 是 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+## 用户模块
+
+#### POST 用户注册
+
+POST /user/register
+
+> Body 请求参数
+
+```json
+{
+  "username": "val213",
+  "password": "123456",
+  "telephone": "1008610001"
+}
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|verifycode|query|string| 否 |none|
+|body|body|object| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "emailAddress": "string"
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» emailAddress|string|true|none||根据用户名创建邮箱地址返回给用户|
+
+#### POST 用户登录
+
+POST /user/login
+
+> Body 请求参数
+
+```json
+{
+  "emailAddress": "val213@yunxin.com",
+  "password": "123456"
+}
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|body|body|object| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "token": "string"
+}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» token|string|true|none||none|
+
+#### POST 发送验证码
+
+POST /user/sendverifycode
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|telephone|query|string| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+#### POST 用户登出
+
+POST /user/logout
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+#### POST 修改密码
+
+POST /user/changepswd
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+#### POST 用户修改信息
+
+POST /user/edit
+
+> Body 请求参数
+
+```json
+{
+  "userEmail": "",
+  "newUserName": ""
+}
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|body|body|object| 否 |none|
+|» userEmail|body|string| 是 |none|
+|» newUserName|body|string| 是 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+## 附件管理模块(弃用)
+
+#### POST 上传附件
+
+POST /attach/upload
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+#### GET 下载附件
+
+GET /attach/download/{attachmentId}
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|attachmentId|path|integer| 是 |none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+#### DELETE 删除附件
+
+DELETE /attach/delete
+
+> 返回示例
+
+> 200 Response
+
+```json
+{}
+```
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+## AI接入模块
+
+#### POST 邮件内容总结
+
+POST /ai/summarize
+
+> Body 请求参数
+
+```json
+"{\r\n    \"content\"：\r\n}"
+```
+
+###### 请求参数
+
+|名称|位置|类型|必选|说明|
+|---|---|---|---|---|
+|body|body|object| 否 |none|
+
+> 返回示例
+
+> 200 Response
+
+###### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231##section-6.3.1)|成功|Inline|
+
+###### 返回数据结构
+
+## 数据模型
+
+<h2 id="tocS_ResultObject">ResultObject</h2>
+
+<a id="schemaresultobject"></a>
+<a id="schema_ResultObject"></a>
+<a id="tocSresultobject"></a>
+<a id="tocsresultobject"></a>
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {}
+}
+
+```
+
+###### 属性
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|code|integer(int32)|false|none|响应码，0失败1成功|none|
+|message|string|false|none|响应码为0时会携带错误消息，前端将其用显示在页面上|none|
+|data|object|false|none|响应码为1且执行查询数据操作时data会携带响应数据|none|
+
+<h2 id="tocS_MailSendDTO">MailSendDTO</h2>
+
+<a id="schemamailsenddto"></a>
+<a id="schema_MailSendDTO"></a>
+<a id="tocSmailsenddto"></a>
+<a id="tocsmailsenddto"></a>
+
+```json
+{
+  "senderId": 0,
+  "receiverId": 0,
+  "theme": "string",
+  "content": "string",
+  "multipartFile": "string"
+}
+
+```
+
+###### 属性
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|senderId|integer(int32)|false|none||none|
+|receiverId|integer(int32)|false|none||none|
+|theme|string|false|none||none|
+|content|string|false|none||none|
+|multipartFile|string(binary)|false|none||none|
+
+
