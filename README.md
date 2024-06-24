@@ -136,6 +136,7 @@ npm run build
 |readis|integer|not null|已读|
 |draft|integer|not null|草稿|
 |junk|integer|not null|是否废弃|
+|cc|text|-|抄送的邮件地址列表|
 
 ### attachment
 
